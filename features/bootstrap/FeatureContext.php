@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -30,14 +32,11 @@ class FeatureContext implements Context
     {
     }
 
-    /**
-     * @Given I am logged in as an administrator
-     */
-    public function iAmLoggedInAsAnAdministrator()
+    public function checkLinkAccessibility(string $baseUri, string $link)
     {
-        $administrator = new GuzzleHttp\Client(['base_uri' => 'http://127.0.0.1:8000', 'verify' => false]);
+        $user = new GuzzleHttp\Client(['base_uri' => $baseUri, 'verify' => false]);
 
-        $this->response = $administrator->get('/admin/');
+        $this->response = $user->get($link);
 
         $responseCode = $this->response->getStatusCode();
 
@@ -46,6 +45,14 @@ class FeatureContext implements Context
         }
 
         return true;
+    }
+
+    /**
+     * @Given I am logged in as an administrator
+     */
+    public function iAmLoggedInAsAnAdministrator()
+    {
+        $this->checkLinkAccessibility('http://127.0.0.1:8000', '/admin/');
     }
 
     /**
@@ -53,17 +60,7 @@ class FeatureContext implements Context
      */
     public function iGoToTheProductsList()
     {
-        $administrator = new GuzzleHttp\Client(['base_uri' => 'http://127.0.0.1:8000', 'verify' => false]);
-
-        $this->response = $administrator->get('/admin/products/');
-
-        $responseCode = $this->response->getStatusCode();
-
-        if (200 != $responseCode) {
-            throw new Exception('Not able to access! '. $responseCode. ' error');
-        }
-
-        return true;
+        $this->checkLinkAccessibility('http://127.0.0.1:8000', '/admin/products/');
     }
 
     /**
@@ -71,17 +68,7 @@ class FeatureContext implements Context
      */
     public function iChooseSimpleProductFromCreateMenu()
     {
-        $administrator = new GuzzleHttp\Client(['base_uri' => 'http://127.0.0.1:8000', 'verify' => false]);
-
-        $this->response = $administrator->get('/admin/products/new/simple/');
-
-        $responseCode = $this->response->getStatusCode();
-
-        if (200 != $responseCode) {
-            throw new Exception('Not able to access!');
-        }
-
-        return true;
+        $this->checkLinkAccessibility('http://127.0.0.1:8000', '/admin/products/new/simple/');
     }
 
     /**
