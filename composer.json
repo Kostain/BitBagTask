@@ -83,7 +83,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "spec\\": "spec/"
         },
         "classmap": [
             "src/Kernel.php"

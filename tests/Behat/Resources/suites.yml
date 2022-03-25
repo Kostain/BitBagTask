@@ -3,6 +3,7 @@ default:
         ui_managing_products_color:
             contexts_services:
                 - sylius.behat.context.setup.admin_security
-                - app.behat.context.color
+            contexts:
+                - App\Tests\Behat\Context\Setup\ProductContext
             filters:
                 tags: "@managing_products_color && @ui"

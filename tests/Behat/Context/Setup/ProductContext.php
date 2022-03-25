@@ -2,23 +2,30 @@
 
 declare(strict_types=1);
 
+namespace Tests\Behat\Context\Setup;
+
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Behat\Tester\Exception\PendingException as Exception;
 use App\Entity\Product\Product;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context
+final class ProductContext implements Context
 {
-    protected $response;
 
+    /** @var Product */
     protected $product;
 
+    /** @var string */
     protected $productCode;
+
+    /** @var string */
     protected $productName;
+
+    /** @var string */
     protected $productColor;
 
     /**
@@ -34,11 +41,11 @@ class FeatureContext implements Context
 
     public function checkLinkAccessibility(string $baseUri, string $link)
     {
-        $user = new GuzzleHttp\Client(['base_uri' => $baseUri, 'verify' => false]);
+        $user = new \GuzzleHttp\Client(['base_uri' => $baseUri, 'verify' => false]);
 
-        $this->response = $user->get($link);
+        $response = $user->get($link);
 
-        $responseCode = $this->response->getStatusCode();
+        $responseCode = $response->getStatusCode();
 
         if (200 != $responseCode) {
             throw new Exception('Not able to access!');

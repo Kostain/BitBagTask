@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Entity\Product;
+namespace Tests\Unit\Entity\Product;
 
 use App\Entity\Product\Product;
 use PHPUnit\Framework\TestCase;
 
-class ProductTest extends TestCase
+final class ProductTest extends TestCase
 {
     public function testProductWithoutColorAttribute()
     {
